@@ -15,22 +15,18 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    private  Long id;
-    private  Long userid;
-    private Long medicineid;
+    private Long id;
+
+    private Long userid;
+
     private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "med_id")
-    @JsonIgnore
     private Medicine medicines;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
     @JsonIgnore
     private Order orders;
-
-
-
-
 }
