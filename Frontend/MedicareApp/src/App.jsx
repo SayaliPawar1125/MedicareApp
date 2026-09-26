@@ -8,7 +8,10 @@ import BackgroundImage1 from'./assets/BackgroundImage1.jpg';
 import Doctors from "./pages/Doctors";
 import Medicines from "./pages/Medicines"
 import Cart from "./components/Cart"
-import TestLab from './pages/TestLab';
+import LabTests from "./pages/LabTests"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import ForgotPassword from "./pages/ForgotPassword"
 
 
 
@@ -36,10 +39,15 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/doctors" element={<Doctors />} />
             <Route path="/medicines" element={<Medicines />} />
-             <Route path="/testlab" element={<TestLab />} />
+             <Route path="/labtest" element={<LabTests />} />
             <Route path="/add-appointment" element={<AddAppointment />} />
             <Route path="/appointments" element={<AppointmentList />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
+             
             
           </Routes>
         </div>

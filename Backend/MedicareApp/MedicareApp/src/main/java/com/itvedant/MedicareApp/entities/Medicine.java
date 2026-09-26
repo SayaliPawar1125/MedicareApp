@@ -1,6 +1,7 @@
 package com.itvedant.MedicareApp.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -39,6 +40,7 @@ public class Medicine {
     private String image;
 
     @OneToMany(mappedBy = "medicines")
+    @JsonIgnoreProperties("medicines")
     private List<CartItem> cartItems;
 
 

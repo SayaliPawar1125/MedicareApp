@@ -114,7 +114,7 @@ function Cart() {
                 })}
                 
                 <tr className="table-light border-top border-dark border-opacity-10">
-                  <td colSpan="4" className="text-end fw-bold fs-5 text-dark">Grand Total:</td>
+                  <td colSpan="4" className="text-end fw-bold fs-5 text-dark">Total Amount:</td>
                   <td className="text-end fw-bold fs-5 text-success">₹{calculateTotal().toFixed(2)}</td>
                   <td></td>
                 </tr>
