@@ -21,6 +21,7 @@ import AdminLabTests from "./pages/AdminLabTests";
 import AdminNavbar from "./components/AdminNavbar";
 import AdminOrders from "./pages/AdminOrders";
 
+
 function App() {
   const role = localStorage.getItem("userRole");
 
@@ -85,7 +86,15 @@ function App() {
                 element={<AdminLabTests />}
               />
 
-              <Route path="/admin-orders" element={<AdminOrders />} />
+            </Route>
+
+            <Route
+              element={<AdminRoute />}
+            >
+              <Route
+                path="/admin-orders"
+                element={<AdminOrders />}
+              />
             </Route>
           </Routes>
 

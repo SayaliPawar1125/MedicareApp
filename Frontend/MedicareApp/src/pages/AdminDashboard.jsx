@@ -78,7 +78,7 @@ function AdminDashboard() {
       icon: "bi-cart-check",
       color: "secondary",
       link: "/admin-orders",
-      button: "Coming Next",
+      button: "View Orders",
     },
   ];
 
