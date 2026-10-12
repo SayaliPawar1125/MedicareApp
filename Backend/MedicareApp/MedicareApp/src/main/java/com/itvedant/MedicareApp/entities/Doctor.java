@@ -23,15 +23,19 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doc_id")
 
-    private  Long id;
+    private  Long id;;;
     @NotBlank(message ="Name is required")
     private String name;
+
     @NotBlank(message = "Specialization is Required")
     private String specialization;
+
     @Min(value = 1, message = "Experience must be atleast 1 Year")
     private Integer experience;
+
     @Positive(message = "Fess should be Positive")
     private Double fees;
+
     @NotBlank(message = "Description should not be blank")
     private String description;
 

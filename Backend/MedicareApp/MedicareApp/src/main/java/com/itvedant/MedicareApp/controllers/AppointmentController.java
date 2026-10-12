@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-    @RequestMapping("/api/appointment")
+@RequestMapping("/api/appointment")
 @CrossOrigin(origins = "http://localhost:5173")
+
     public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
@@ -35,16 +37,28 @@ import org.springframework.web.bind.annotation.*;
                 HttpStatus.FOUND);
     }
 
-        @PutMapping("/processpay/{id}")
+
+    @PutMapping("/processpay/{id}")
         public ResponseEntity<?> processPayment(
                 @PathVariable Long id,
                 @RequestParam Double payment,
                 @RequestParam String paymode) {
 
-            return new ResponseEntity<>(
-                    appointmentService.processPayment(id, payment, paymode),
-                    HttpStatus.OK
-            );
+        return new ResponseEntity<>(
+                appointmentService.processPayment(id, payment, paymode),
+                HttpStatus.OK
+        );
+    }
+
+    // Update appointment status
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> updateAppointmentStatus(
+            @PathVariable Long id,
+            @RequestParam String status) {
+
+        return ResponseEntity.ok(
+                appointmentService.updateAppointmentStatus(id, status)
+        );
     }
 }
 

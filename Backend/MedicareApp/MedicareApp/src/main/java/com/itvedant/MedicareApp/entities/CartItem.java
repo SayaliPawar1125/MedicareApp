@@ -8,7 +8,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 public class CartItem {
 
@@ -21,12 +20,16 @@ public class CartItem {
 
     private Integer quantity;
 
+
+    // Many CartItems can belong to One Medicine
     @ManyToOne
     @JoinColumn(name = "med_id")
     private Medicine medicines;
 
+
+    // Many CartItems belong to One Order
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
-    @JsonIgnore
     private Order orders;
 }

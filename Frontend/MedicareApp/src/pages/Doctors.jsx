@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DoctorServices from '../services/DoctorServices'; 
+import DoctorServices from '../services/DoctorServices';
 
 function Doctors() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function Doctors() {
       .catch((err) => {
         console.error("Error fetching doctors from database:", err);
         setLoading(false);
-        setDoctorsList([]); 
+        setDoctorsList([]);
       });
   }, []);
 
@@ -54,7 +54,7 @@ function Doctors() {
           {doctorsList.map((doc) => (
             <div className="col-md-4" key={doc.id}>
               <div className="card h-100 shadow border-0 bg-white bg-opacity-95 text-start rounded-3">
-                
+
                 <div className="text-center pt-4">
                   <div className="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary" style={{ width: "90px", height: "90px" }}>
                     <i className="bi bi-person-workspace" style={{ fontSize: "3rem" }}></i>
@@ -69,7 +69,7 @@ function Doctors() {
                         {doc.specialization}
                       </span>
                     </p>
-                    
+
                     <hr className="text-muted my-2" style={{ opacity: 0.15 }} />
 
                     <div className="d-flex justify-content-between text-muted small mb-2">
@@ -88,9 +88,19 @@ function Doctors() {
                     </p>
                   </div>
 
-                  <button 
+                  <button
                     className="btn btn-primary w-100 fw-bold py-2 rounded-pill mt-3 shadow-sm d-flex align-items-center justify-content-center gap-2"
-                    onClick={() => navigate("/add-appointment")}
+                    onClick={() =>
+                      navigate("/add-appointment", {
+                        state: {
+                          doctorId: doc.id,
+                          doctorName: doc.name,
+                          doctorSpecialization: doc.specialization,
+                          doctorExperience: doc.experience,
+                          doctorFees: doc.fees
+                        }
+                      })
+                    }
                   >
                     <i className="bi bi-calendar-plus"></i> Book Appointment
                   </button>

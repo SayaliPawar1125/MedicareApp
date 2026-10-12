@@ -43,9 +43,8 @@ public class Appointments {
     @JoinColumn(name = "doc_id")
     private Doctor doctor;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Cascade type ALL ensures the patient is saved automatically if it's a new profile
+    @ManyToOne
     @JoinColumn(name = "patient_id")
-    @JsonIgnoreProperties("appointments")
     private Patient patient;
 
 }

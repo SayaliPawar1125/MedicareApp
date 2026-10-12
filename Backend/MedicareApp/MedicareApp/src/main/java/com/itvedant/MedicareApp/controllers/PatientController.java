@@ -28,13 +28,19 @@ public class PatientController {
             return  new ResponseEntity<>(patientService.getPatientById(id),HttpStatus.FOUND);
         }
 
-        @PostMapping("/savePatient")
-        public ResponseEntity<?> savePatient(@RequestBody Patient patient)
-        {
-            ResponseEntity<?> responseEntity = new ResponseEntity<>
-                    (patientService.savePatient(patient), HttpStatus.CREATED);
-            return responseEntity;
-        }
+    @PostMapping("/savePatient/{userId}")
+    public ResponseEntity<?> savePatient(
+            @RequestBody Patient patient,
+            @PathVariable Long userId) {
+
+        Patient savedPatient =
+                patientService.savePatient(patient, userId);
+
+        return new ResponseEntity<>(
+                savedPatient,
+                HttpStatus.CREATED
+        );
+    }
         @DeleteMapping("/deletePatient")
         public  ResponseEntity<?> deletePatient(@PathVariable Long id)
         {

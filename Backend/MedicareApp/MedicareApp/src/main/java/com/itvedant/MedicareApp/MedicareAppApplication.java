@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MedicareAppApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(MedicareAppApplication.class, args);
+		System.out.println("Welcome to Medicare App Backend");
 	}
 
 }

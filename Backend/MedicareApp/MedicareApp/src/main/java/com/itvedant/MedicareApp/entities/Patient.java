@@ -1,9 +1,7 @@
 package com.itvedant.MedicareApp.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,9 +9,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-
-
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,9 +18,9 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 public class Patient {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
     @NotBlank(message = "FirstName is Required Field")
@@ -36,7 +32,12 @@ public class Patient {
     private String gender;
 
     private LocalDate dateofbirth;
-    @Size(min = 10, max = 10, message = "Phone No Should be 10 Digits")
+
+    @Size(
+            min = 10,
+            max = 10,
+            message = "Phone No Should be 10 Digits"
+    )
     private String phone;
 
     @Email(message = "InCorrect Format")
@@ -49,6 +50,13 @@ public class Patient {
     private String bloodgroup;
 
     private LocalDateTime registrationdate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "patient")
+    private List<Appointments> appointments;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 }
-
-

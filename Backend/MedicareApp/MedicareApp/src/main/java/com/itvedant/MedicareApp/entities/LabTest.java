@@ -18,7 +18,7 @@ public class LabTest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
   private  Long id;
 
-    @NotBlank(message = "Name should not be Negative")
+    @NotBlank(message = "Name should  be Required")
     private String name;
 
     @Positive(message = "Price should not be negative")

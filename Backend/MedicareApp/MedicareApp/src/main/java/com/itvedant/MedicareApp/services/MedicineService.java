@@ -12,9 +12,8 @@ public class MedicineService {
     @Autowired
     private MedicineRepository medicineRepository;
 
-    public Medicine saveMedicine(Medicine medicine)
-    {
-        return  medicineRepository.save(medicine);
+    public Medicine saveMedicine(Medicine medicine) {
+        return medicineRepository.save(medicine);
     }
 
     public List<Medicine> getAllMedicines() {

@@ -40,4 +40,15 @@ public class LabTestService {
         }
         throw new RuntimeException("Lab Test Not Found with ID: " + id);
     }
+
+    public LabTest updateLabTest(Long id, LabTest updatedLabTest) {
+        LabTest existing = getLabTestById(id);
+
+        existing.setName(updatedLabTest.getName());
+        existing.setCategory(updatedLabTest.getCategory());
+        existing.setDescription(updatedLabTest.getDescription());
+        existing.setPrice(updatedLabTest.getPrice());
+
+        return labTestRepository.save(existing);
+    }
 }

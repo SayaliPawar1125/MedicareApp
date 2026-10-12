@@ -1,7 +1,7 @@
 package com.itvedant.MedicareApp.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 public class Medicine {
 
@@ -39,8 +38,8 @@ public class Medicine {
     @NotBlank(message = "Image Field is Required Data")
     private String image;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "medicines")
-    @JsonIgnoreProperties("medicines")
     private List<CartItem> cartItems;
 
 

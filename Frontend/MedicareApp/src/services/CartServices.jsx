@@ -1,25 +1,38 @@
-import axios from "axios";
+import api from "./api";
 
-const API_BASE_URL = "http://localhost:8080/api/v1";
+const API_BASE_URL = "/api/cart";
 
 class CartServices {
-    
+
     addItemToCart(cartItemPayload) {
-        return axios.post(`${API_BASE_URL}/addtocart`, cartItemPayload);
+        return api.post(
+            `${API_BASE_URL}/addtocart`,
+            cartItemPayload
+        );
     }
 
     getAllCartItems() {
-        return axios.get(`${API_BASE_URL}/getAllCartItems`);
+        return api.get(
+            `${API_BASE_URL}/getAllCartItems`
+        );
     }
 
     deleteCartItem(id) {
-        return axios.delete(`${API_BASE_URL}/deleteCartItem/${id}`);
+        return api.delete(
+            `${API_BASE_URL}/deleteCartItem/${id}`
+        );
     }
 
     updateItemQuantity(id, quantity) {
-        return axios.put(`${API_BASE_URL}/updatequantity/${id}`, null, {
-            params: { quantity: quantity }
-        });
+        return api.put(
+            `${API_BASE_URL}/updatequantity/${id}`,
+            null,
+            {
+                params: {
+                    quantity: quantity
+                }
+            }
+        );
     }
 }
 

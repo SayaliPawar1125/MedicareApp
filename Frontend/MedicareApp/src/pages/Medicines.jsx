@@ -30,50 +30,81 @@ function Medicines() {
       });
   }, []);
 
-  const handleAddToCart = (medicineId) => {
-    console.log("Selected Medicine ID:", medicineId);
-    if (!medicineId) {
-      alert("Error: Missing primary product ID mapping.");
-      return;
+const handleAddToCart = async (medicineId) => {
+
+  console.log("Selected Medicine ID:", medicineId);
+
+  if (!medicineId) {
+    alert("Error: Missing primary product ID mapping.");
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
+
+  // User must be logged in
+  if (!token || !userId) {
+    alert("Please login first to add medicines to cart.");
+    navigate("/login");
+    return;
+  }
+
+  const cartItemPayload = {
+    userid: Number(userId),
+    quantity: 1,
+    medicines: {
+      id: Number(medicineId)
     }
+  };
 
-    const cartItemPayload = {
-      userid: 1,
-      quantity: 1,
-      medicines: {
-        id: Number(medicineId)
-      }
-    };
+  console.log(
+    "Submitting cart insertion payload:",
+    cartItemPayload
+  );
 
-    console.log(
-      "Submitting cart insertion payload:",
+  try {
+
+    const res = await CartServices.addItemToCart(
       cartItemPayload
     );
 
-    CartServices.addItemToCart(cartItemPayload)
-      .then((res) => {
-        console.log(
-          "Cart API Response:",
-          res
-        );
-        alert("Item added to cart successfully!");
-      })
-      .catch((err) => {
-        console.error(
-          "Cart insertion failed:",
-          err
-        );
-        console.error(
-          "Backend Response:",
-          err.response?.data
-        );
-        console.error(
-          "HTTP Status:",
-          err.response?.status
-        );
-        alert("Failed to add item to cart.");
-      });
-  };
+    console.log(
+      "Cart API Response:",
+      res
+    );
+
+    alert("Item added to cart successfully!");
+   window.dispatchEvent(new Event("cartUpdated"));
+
+  } catch (err) {
+
+    console.error(
+      "Cart insertion failed:",
+      err
+    );
+
+    console.error(
+      "Backend Response:",
+      err.response?.data
+    );
+
+    console.error(
+      "HTTP Status:",
+      err.response?.status
+    );
+
+    if (err.response?.status === 401 ||
+        err.response?.status === 403) {
+
+      alert("Your login session has expired. Please login again.");
+      localStorage.removeItem("token");
+      navigate("/login");
+
+    } else {
+      alert("Failed to add item to cart.");
+    }
+  }
+};
 
   const filteredMedicines = medicineList.filter((med) => {
     const searchLower = searchTerm.toLowerCase();
@@ -188,8 +219,7 @@ function Medicines() {
                         {med.name}
                       </h4>
                       <h3 className="text-success fw-bold my-3">
-                        ₹
-                        {med.price
+                        ₹{med.price
                           ? Number(med.price).toFixed(2)
                           : "0.00"
                         }
@@ -211,10 +241,7 @@ function Medicines() {
                     <button
                       type="button"
                       className="btn btn-outline-success w-100 fw-bold py-2 rounded-pill mt-3 shadow-sm d-flex align-items-center justify-content-center gap-2"
-                      onClick={() => {
-                        handleAddToCart(targetId);
-                        navigate("/cart");
-                      }}
+                      onClick={() => handleAddToCart(targetId)}
                     >
                       <i className="bi bi-cart-plus"></i>
                       Add to Cart

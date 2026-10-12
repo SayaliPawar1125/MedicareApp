@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -15,29 +16,35 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
     private  Long id;
-    @NotBlank(message = "Name Is Required Field")
-    private String name;
+    @NotBlank(message = "First Name is required")
+    private String firstname;
+
+    @NotBlank(message = "Last Name is required")
+    private String lastname;
 
     @Email(message = "Not a Correct Email Format")
-    private String email;
 
-    @Size(min = 4, max = 20, message = "Password minimum size is 4 and max size=20")
+    private String email;
+    @JsonIgnore
+    @Column(nullable = false, length = 100)
     private String password;
 
     @Size(min = 10, max = 10, message = "Phone No Should be of 10 Digits")
     private String phone;
 
+    private LocalDate dateOfBirth;
+    private String gender;
+    private String address;
+
     @NotBlank(message = "Role Is Required Field")
     private String role;
 
-    @NotBlank(message = "Image Is Required Field")
     private String image;
 
     @JsonIgnore
@@ -49,5 +56,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Patient> patients;
 }

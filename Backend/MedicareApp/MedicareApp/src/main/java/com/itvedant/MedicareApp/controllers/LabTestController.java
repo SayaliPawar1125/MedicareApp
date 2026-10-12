@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vi")
+@RequestMapping("/api/labtests")
 @CrossOrigin(origins = "http://localhost:5173")
 public class LabTestController
 {
@@ -24,7 +24,7 @@ public class LabTestController
             return new ResponseEntity<>(labTestService.saveLabTest(labTest), HttpStatus.CREATED);
         }
 
-        @GetMapping("/all")
+        @GetMapping("/getAlllabtest")
         public ResponseEntity<List<LabTest>> getAllLabTests() {
             return new ResponseEntity<>(labTestService.getAllLabTests(), HttpStatus.OK);
         }
@@ -38,4 +38,15 @@ public class LabTestController
         public ResponseEntity<?> deleteLabTest(@PathVariable Long id) {
             return new ResponseEntity<>(labTestService.deleteLabTest(id), HttpStatus.OK);
         }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateLabTest(
+            @PathVariable Long id,
+            @RequestBody LabTest labTest) {
+
+        return new ResponseEntity<>(
+                labTestService.updateLabTest(id, labTest),
+                HttpStatus.OK
+        );
+    }
     }
