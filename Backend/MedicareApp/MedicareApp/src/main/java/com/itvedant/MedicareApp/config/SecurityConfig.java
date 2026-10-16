@@ -1,3 +1,4 @@
+
 package com.itvedant.MedicareApp.config;
 
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,6 @@ public class SecurityConfig {
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter) {
-
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
@@ -30,11 +30,8 @@ public class SecurityConfig {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
-
                 .cors(cors -> {})
-
                 .formLogin(AbstractHttpConfigurer::disable)
-
                 .httpBasic(AbstractHttpConfigurer::disable)
 
                 .sessionManagement(session ->
@@ -46,21 +43,29 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // Allow CORS preflight requests
-                        .requestMatchers(HttpMethod.OPTIONS, "/**")
-                        .permitAll()
+                        .requestMatchers(
+                                HttpMethod.OPTIONS, "/**"
+                        ).permitAll()
 
-                  
                         // Public authentication APIs
                         .requestMatchers(
                                 "/api/auth/register",
                                 "/api/auth/login"
                         ).permitAll()
 
-                        // Admin dashboard and all admin APIs
+                        // Public GET APIs: visible before login
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/doctor/**",
+                                "/api/medicine/**",
+                                "/api/labtests/**"
+                        ).permitAll()
+
+                        // Admin dashboard and admin APIs
                         .requestMatchers("/api/admin/**")
                         .hasRole("ADMIN")
 
-                        // Orders: only ADMIN can view all orders
+                        // All orders: viewing all orders is ADMIN only
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/orders/getAllOrders"
@@ -92,26 +97,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/cart/**")
                         .hasAnyRole("USER", "ADMIN")
 
-                        // Public doctor browsing
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/doctor/**"
-                        ).permitAll()
-
                         // Doctor management: ADMIN only
                         .requestMatchers(
-                                HttpMethod.POST,
-                                "/api/doctor/**"
+                                HttpMethod.POST, "/api/doctor/**"
                         ).hasRole("ADMIN")
 
                         .requestMatchers(
-                                HttpMethod.PUT,
-                                "/api/doctor/**"
+                                HttpMethod.PUT, "/api/doctor/**"
                         ).hasRole("ADMIN")
 
                         .requestMatchers(
-                                HttpMethod.DELETE,
-                                "/api/doctor/**"
+                                HttpMethod.DELETE, "/api/doctor/**"
                         ).hasRole("ADMIN")
 
                         // Appointment status changes: ADMIN only
@@ -127,6 +123,7 @@ public class SecurityConfig {
                         // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
+
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class

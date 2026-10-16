@@ -1,29 +1,54 @@
-import React from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Navbar from "./components/Navbar"
-import AdminRoute from "./components/AdminRoutes"
-import AppointmentList from "./components/AppointmentList"
-import AddAppointment from "./components/AddAppointment"
-import Home from "./pages/Home"
-import BackgroundImage1 from './assets/BackgroundImage1.jpg';
+
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+import AdminNavbar from "./components/AdminNavbar";
+import AdminRoute from "./components/AdminRoutes";
+import AppointmentList from "./components/AppointmentList";
+import AddAppointment from "./components/AddAppointment";
+
+import Home from "./pages/Home";
+import BackgroundImage1 from "./assets/BackgroundImage1.jpg";
 import Doctors from "./pages/Doctors";
-import Medicines from "./pages/Medicines"
-import Cart from "./components/Cart"
-import LabTests from "./pages/LabTests"
-import Login from "./pages/Login"
-import Register from "./pages/Register"
-import ForgotPassword from "./pages/ForgotPassword"
-import Profile from "./pages/Profile"
+import Medicines from "./pages/Medicines";
+import Cart from "./components/Cart";
+import LabTests from "./pages/LabTests";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import Profile from "./pages/Profile";
+
 import AdminDashboard from "./pages/AdminDashboard";
-import AdminDoctors from "./pages/AdminDoctor"
+import AdminDoctors from "./pages/AdminDoctor";
 import AdminMedicines from "./pages/AdminMedicines";
 import AdminLabTests from "./pages/AdminLabTests";
-import AdminNavbar from "./components/AdminNavbar";
 import AdminOrders from "./pages/AdminOrders";
 
-
 function App() {
-  const role = localStorage.getItem("userRole");
+  const [role, setRole] = useState(
+    () => localStorage.getItem("userRole")
+  );
+
+  useEffect(() => {
+    const updateRole = () => {
+      setRole(localStorage.getItem("userRole"));
+    };
+
+    // Update navbar when login/logout occurs
+    window.addEventListener("authChanged", updateRole);
+
+    // Update if localStorage changes in another browser tab
+    window.addEventListener("storage", updateRole);
+
+    // Read the latest role when the component mounts
+    updateRole();
+
+    return () => {
+      window.removeEventListener("authChanged", updateRole);
+      window.removeEventListener("storage", updateRole);
+    };
+  }, []);
 
   const globalBackgroundStyle = {
     backgroundImage: `url(${BackgroundImage1})`,
@@ -38,11 +63,10 @@ function App() {
 
   return (
     <BrowserRouter>
-
       <div style={globalBackgroundStyle}>
         {role === "ADMIN" ? <AdminNavbar /> : <Navbar />}
-        <div className="container pb-5">
 
+        <div className="container pb-5">
           <Routes>
             {/* Public and user routes */}
             <Route path="/" element={<Home />} />
@@ -78,32 +102,21 @@ function App() {
                 element={<AdminMedicines />}
               />
 
-            </Route>
-
-            <Route element={<AdminRoute />}>
               <Route
                 path="/admin-labtests"
                 element={<AdminLabTests />}
               />
 
-            </Route>
-
-            <Route
-              element={<AdminRoute />}
-            >
               <Route
                 path="/admin-orders"
                 element={<AdminOrders />}
               />
             </Route>
           </Routes>
-
         </div>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
-
-
+export default App;

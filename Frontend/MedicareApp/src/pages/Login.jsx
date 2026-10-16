@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -98,9 +99,10 @@ function Login() {
         return !newErrors.username && !newErrors.password;
     };
 
-    // Handle input changes
+    // Handle email changes
     const handleEmailChange = (e) => {
         const value = e.target.value;
+
         setUsername(value);
 
         setErrors((previous) => ({
@@ -109,8 +111,10 @@ function Login() {
         }));
     };
 
+    // Handle password changes
     const handlePasswordChange = (e) => {
         const value = e.target.value;
+
         setPassword(value);
 
         setErrors((previous) => ({
@@ -155,36 +159,19 @@ function Login() {
             // Store user details
             localStorage.setItem("token", data.token);
             localStorage.setItem("userId", data.id);
-            localStorage.setItem("firstname", data.firstname);
-            localStorage.setItem("lastname", data.lastname);
-            localStorage.setItem("userEmail", data.email);
-            localStorage.setItem("userRole", data.role);
+            localStorage.setItem("firstname", data.firstname ?? "");
+            localStorage.setItem("lastname", data.lastname ?? "");
+            localStorage.setItem("userEmail", data.email ?? "");
+            localStorage.setItem("userRole", data.role ?? "");
 
-            console.log(
-                "Logged-in user:",
-                data.firstname,
-                data.lastname
-            );
+            console.log("Logged-in user:", data.firstname, data.lastname);
+            console.log("Email stored:", localStorage.getItem("userEmail"));
+            console.log("Token stored:", Boolean(localStorage.getItem("token")));
+            console.log("User ID stored:", localStorage.getItem("userId"));
+            console.log("Role stored:", localStorage.getItem("userRole"));
 
-            console.log(
-                "Email stored:",
-                localStorage.getItem("userEmail")
-            );
-
-            console.log(
-                "Token stored:",
-                localStorage.getItem("token")
-            );
-
-            console.log(
-                "User ID stored:",
-                localStorage.getItem("userId")
-            );
-
-            console.log(
-                "Role stored:",
-                localStorage.getItem("userRole")
-            );
+            // IMPORTANT: Update Navbar immediately without refreshing
+            window.dispatchEvent(new Event("authChanged"));
 
             alert("Login Successful!");
 
@@ -194,7 +181,6 @@ function Login() {
             } else {
                 navigate("/");
             }
-
         } catch (error) {
             console.error("Login Error:", error);
             alert(error.message);
@@ -256,10 +242,7 @@ function Login() {
                         />
 
                         {errors.username && (
-                            <div
-                                id="emailError"
-                                className="invalid-feedback"
-                            >
+                            <div id="emailError" className="invalid-feedback">
                                 {errors.username}
                             </div>
                         )}
@@ -310,33 +293,24 @@ function Login() {
                     {/* Login button */}
                     <button
                         type="submit"
-                        className="btn btn-primary w-100 fw-bold py-2 mb-3"
+                        className="btn btn-primary w-100 fw-semibold"
                         disabled={loading}
                     >
                         {loading ? "Logging in..." : "Login"}
                     </button>
 
                     {/* Forgot Password */}
-                    <div className="text-center">
-                        <Link
-                            to="/forgotpassword"
-                            className="text-primary fw-bold small text-decoration-none"
-                        >
-                            Forgot Password
+                    <div className="text-center mt-3">
+                        <Link to="/forgotpassword" className="text-decoration-none">
+                            Forgot Password?
                         </Link>
                     </div>
 
                     {/* Register */}
-                    <div className="text-center">
-                        <span className="text-muted small">
-                            Don't have an account?{" "}
-                        </span>
-
-                        <Link
-                            to="/register"
-                            className="text-primary fw-bold small text-decoration-none"
-                        >
-                            Register Here
+                    <div className="text-center mt-3">
+                        Don't have an account?{" "}
+                        <Link to="/register" className="text-decoration-none">
+                            Register
                         </Link>
                     </div>
                 </form>

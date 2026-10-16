@@ -15,9 +15,12 @@ function AdminNavbar() {
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userRole");
 
-    navigate("/login", { replace: true });
-    window.location.reload();
-  };
+   // Notify App.jsx that the user has logged out
+  window.dispatchEvent(new Event("authChanged"));
+
+  // Navigate to login without refreshing the page
+  navigate("/login", { replace: true });
+};
 
   const navLinkClass = (path) =>
     `nav-link fw-semibold ${location.pathname === path
